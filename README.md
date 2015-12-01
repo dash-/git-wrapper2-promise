@@ -15,7 +15,7 @@ replacing the child-process module with the child-process-promise module
 (which uses [q](https://github.com/kriskowal/q) promises), resulting in a
 higher-quality promisification implementation.
 
-*NOTE* In addition to implementing promises, this library removes the event
+**NOTE** In addition to implementing promises, this library removes the event
 emissions that were present in previous versions.  Any event emissions must
 therefore be implemented by consumers.
 
