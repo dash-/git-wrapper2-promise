@@ -16,8 +16,8 @@ replacing the child-process module with the child-process-promise module
 higher-quality promisification implementation.
 
 **NOTE** In addition to implementing promises, this library removes the event
-emissions that were present in previous versions.  Any event emissions must
-therefore be implemented by consumers.
+emissions that were present in previous versions.  If you desire event emissions,
+you must therefore be implement them yourself.
 
 ## Installation
 
