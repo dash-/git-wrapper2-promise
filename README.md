@@ -73,7 +73,8 @@ git.isRepo().then(function(isRepo) {
 
 ### git.clone(repo, dir);
 
-Clones a repository to the destination `dir`.
+Clones a repository to the destination `dir` and returns a promise for a
+pre-processed child process object. 
 
   * `repo`     String.          Remote repository.
   * `dir`      String.          Local directory to clone into.
@@ -88,8 +89,9 @@ git.clone(repo, dir).then(function(childProcess) {
 
 ### git.pull([remote], [branch])
 
-Performs a `git pull` command against the repository. If `remote` or `branch`
-are not provided they will default to `origin` and `master` respectively.
+Performs a `git pull` command against the repository and returns a promise for
+a pre-processed child process object. If `remote` or `branch` are not provided
+they will default to `origin` and `master` respectively.
 
   * `remote`   String.          Name of the remote target.
   * `branch`   String.          Branch name to pull.
@@ -104,7 +106,8 @@ git.pull(remote, branch).then(function(childProcess) {
 
 ### git.add(which)
 
-Perform a `git add` command, staging files for a commit.
+Perform a `git add` command, staging files for a commit and returns a promise
+for a pre-processed child process object.
 
   * `which`    String.          Which files to stage, seperated by spaces.
 
@@ -118,7 +121,8 @@ git.add('/path/to/repo/file').then(function(childProcess) {
 
 ### git.commit(msg)
 
-Commits staged changes with the given `msg` as the commit message.
+Commits staged changes with the given `msg` as the commit message and returns a
+promise for a pre-processed child process object.
 
   * `msg`      String.          Body of the commit message.
 
@@ -132,8 +136,9 @@ git.commit(msg).then(function(childProcess) {
 
 ### git.push([remote], [branch])
 
-Pushes changes in the local repository to a remote. If `remote` or `branch` are
-not provided, the defaults will be `origin` and `master` respectively.
+Pushes changes in the local repository to a remote and returns a promise for a
+pre-processed child process object. If `remote` or `branch` are not provided,
+the defaults will be `origin` and `master` respectively.
 
   * `remote`   String.          Name of the remote target.
   * `branch`   String.          Branch name to pull.
@@ -149,13 +154,13 @@ git.push(remote, branch).then(function(childProcess) {
 ### git.save(msg)
 
 Convenience function for performing `git.add`, `git.commit`, and `git.push` in
-one function call. Using this will automatically stage all unstaged changes,
-commit, and then push.
+one function call. Returns a promise for the last child process (git push). 
+Using this will automatically stage all unstaged changes, commit, and then push.
 
   * `msg`      String.          Body of the commit message.
 
 ``` Example:
-git.pull(remote, branch).then(function(childProcess) {
+git.save(msg).then(function(childProcess) {
 	console.log(childProcess.stdout.toString());
 }).catch(function(err) {
 	console.error(err);
@@ -164,14 +169,14 @@ git.pull(remote, branch).then(function(childProcess) {
 
 ### git.log(options)
 
-Performs a `git log` command, returning a promise for a child process.
-`options` are an array of command line options you might want to provide,
-such as `['-n', 2]` to limit the results to only the last 2 commits.
+Performs a `git log` command and returns a promise for a pre-processed child
+process object.  `options` are an array of command line options you might want
+to provide, such as `['-n', 2]` to limit the results to only the last 2 commits.
 
   * `options`   Array.          Command line options for the `git log` command.
 
 ``` Example:
-git.log().then(function(childProcess) {
+git.log(options).then(function(childProcess) {
 	console.log(childProcess.stdout.toString());
 }).catch(function(err) {
 	console.error(err);
