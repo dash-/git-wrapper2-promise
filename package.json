@@ -1,6 +1,6 @@
 {
   "name": "git-wrapper2-promise",
-  "description": "A wrapper around the git executable with convenience functions for common commands, promisified via child-process-promise and bluebird",
+  "description": "A wrapper around the git executable with convenience functions for common commands, promisified via child-process-promise",
   "tags": [
     "git"
   ],
