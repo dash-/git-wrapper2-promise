@@ -6,23 +6,22 @@ var isRepo = exports.isRepo = function(){
     return true;
 
   }).catch(function(childProcess) {
-  	var err;
+    var err;
 
-  	if(! childProcess.stderr) {
-  		err = childProcess;
-  		throw err;
-  	}
-
-  	err = childProcess.stderr;
-    if(err.toString().indexOf('Not a git repository') === -1) {
-      return true;
+    if(! childProcess.stderr) {
+      err = childProcess;
+      throw err;
     }
 
-    return false;
+    if(childProcess.code === 128) {
+      return false;
+    }
+
+    throw new Error(childProcess.stderr.toString());
   });
 };
-    
-      
+
+
 /*
  * Clone the repository.
 **/
@@ -70,7 +69,7 @@ var rm = exports.rm = function(which) {
 **/
 var commit = exports.commit = function(msg, args){
   args = (args || []).concat(['-m', msg]);
-  
+
   return this.spawn('commit', args);
 };
 

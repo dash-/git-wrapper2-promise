@@ -6,7 +6,7 @@ commands, promisified via
 [child-process-promise](https://github.com/patrick-steele-idem/child-process-promise).
 
 Built on top of [git-wrapper2](https://www.npmjs.com/package/git-wrapper2)
-which provided additional convenience functions to the original
+version 0.2.5, which provided additional convenience functions to the original
 [git-wrapper](https://github.com/pvorb/node-git-wrapper), 
 git-wrapper2-promise provides the same functionality with a simpler,
 promise-based interface.  Far from being a simple Promise.promisifyAll
@@ -16,8 +16,18 @@ replacing the child-process module with the child-process-promise module
 higher-quality promisification implementation.
 
 **NOTE** In addition to implementing promises, this library removes the event
-emissions that were present in previous versions.  If you desire event emissions,
-you must therefore implement them yourself.
+emissions that were present in previous versions (git-wrapper and git-wrapper2).
+If you desire event emissions, you must therefore implement them yourself.
+
+**NOTE** Unlike previous versions (git-wrapper and git-wrapper2), this library
+does not call process.chdir() to change the process current working directory
+to the repository directory (as provided by the git-dir option).  This has
+various issues if consumer code changes to a different directory (particularly
+in asynchronous logic).  Instead, it relies on proper usage of git-dir and
+work-tree options.  For this to work easily for consumers, if a git-dir option
+is provided, it is automatically appended with the .git sub-directory, and if
+a work-tree option is not specified in combination with git-dir, it will
+automatically be set to the specified base repository directory.
 
 ## Installation
 

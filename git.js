@@ -5,48 +5,43 @@ var exec = require('child-process-promise').exec;
 var spawn = require('child-process-promise').spawn;
 var commands = require('./commands');
 var inherits = require('util').inherits;
-var Promise = require('bluebird');
 
 // Class Git
 var Git = module.exports = function (options) {
   this.binary = 'git';
   options = options || {};
 
-  // if a gitDir is provided, make sure we are chdir-ed into
-  // the directory before performing git operations.
+  // If a gitDir is provided, make sure it is to the .git
+  // directory and a working tree is provided (or set to
+  // base directory)
   var gitDir = options['git-dir'];
   if(gitDir) {
-    var dir = path.dirname(gitDir);
-    var spawn = this.spawn.bind(this);
-    this.spawn = function(command){
-      if(command.indexOf('clone') === 0) {
-        return spawn.apply(this, arguments);
-      }
+    var sep = path.sep === '/' ? '\\/' : path.sep;
+    var isGitRegex = new RegExp(sep + '\\.git$', 'g');
+    if(! gitDir.match(isGitRegex)) {
+      options['git-dir'] = path.join(gitDir, '.git');
+    }
 
-      process.chdir(dir);
-      return spawn.apply(this, arguments);
-    };
+    if(! options['work-tree']) {
+      options['work-tree'] = path.join(options['git-dir'], '..');
+    }
   }
 
   this.args = Git.optionsToArray(options);
 };
 
 Git.prototype.exec = function(command, args) {
-  callback = arguments[arguments.length - 1];
-  if(arguments.length == 2) {
-    args = [];
-  }
+  args = args || [];
 
   return this.spawn(command, args, {
     capture: ['stdout', 'stderr']
   });
 };
 
-// git.spawn(command [, args], callback
+// git.spawn(command [, args])
 Git.prototype.spawn = function(command, args){
-  if(arguments.length == 1) {
-    args = [];
-  }
+  args = args || [];
+
   command = Array.isArray(command) ? command : [command];
   var rawargs = this.args.concat(command).concat(args);
   args = [];
@@ -55,7 +50,7 @@ Git.prototype.spawn = function(command, args){
   for(var i = 0, len = rawargs.length; i < len; i++) {
     if(rawargs[i] != null) args.push(rawargs[i]+"");
   }
-  
+
   return spawn(this.binary, args, {
     capture: ['stdout', 'stderr']
   });
@@ -63,7 +58,7 @@ Git.prototype.spawn = function(command, args){
 
 Git.optionsToArray = function(options){
   var args = [];
-  
+
   Object.keys(options).forEach(function(k){
     var val = options[k];
 
