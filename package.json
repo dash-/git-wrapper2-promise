@@ -4,7 +4,10 @@
   "tags": [
     "git"
   ],
-  "version": "0.2.8",
+  "keywords": [
+  	"git", "git-wrapper", "git-wrapper2"
+	],
+  "version": "0.2.9",
   "author": {
     "name": "Paul Vorbach",
     "email": "paul@vorba.ch",
