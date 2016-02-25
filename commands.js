@@ -104,7 +104,7 @@ exports.save = function(msg, commitargs){
 **/
 exports.log = function(args) {
   args = args || [];
-  return this.spawn('log', options);
+  return this.spawn('log', args);
 };
 
 /*
