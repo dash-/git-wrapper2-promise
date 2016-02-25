@@ -92,10 +92,11 @@ var push = exports.push = function(remote, branch){
  * Save - Does commit and push at once.
 **/
 exports.save = function(msg, commitargs){
-  return this.add('-A').then(function() {
-    return this.commit(msg, commitargs);
+  var that = this ;
+  return that.add('-A').then(function() {
+    return that.commit(msg, commitargs);
   }).then(function() {
-    return this.push();
+    return that.push();
   });
 };
 
